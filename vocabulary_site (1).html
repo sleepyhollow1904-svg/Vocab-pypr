@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Lists</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #e8e0c8;
+    --card-yellow: #f5f07a;
+    --card-pink: #e8b8e0;
+    --card-green: #7acc30;
+    --card-orange: #f5a820;
+    --header-blue: #90d8f0;
+    --text-dark: #1a1a1a;
+    --shadow: 0 6px 0 rgba(0,0,0,0.18);
+    --shadow-hover: 0 8px 0 rgba(0,0,0,0.22);
+  }
+
+  body {
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: var(--bg);
+    min-height: 100vh;
+    color: var(--text-dark);
+  }
+
+  /* ===== HOME PAGE ===== */
+  #home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 60px;
+    min-height: 100vh;
+  }
+
+  .site-title-wrap {
+    background: var(--header-blue);
+    border-radius: 24px 24px 50% 50% / 24px 24px 40px 40px;
+    padding: 28px 80px 36px;
+    margin-bottom: 52px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  .site-title-wrap h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--text-dark);
+  }
+
+  .topics-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 900px;
+  }
+
+  .topic-btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 800;
+    border: none;
+    border-radius: 18px;
+    padding: 20px 44px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    letter-spacing: 0.5px;
+    color: var(--text-dark);
+    min-width: 180px;
+  }
+
+  .topic-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .topic-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+  }
+
+  .btn-career  { background: var(--card-yellow); }
+  .btn-sports  { background: var(--card-green); }
+  .btn-culture { background: var(--card-orange); }
+  .btn-medicine{ background: var(--card-pink); }
+
+  /* ===== CAREER PAGE ===== */
+  #career-page {
+    display: none;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  .page-header {
+    background: var(--card-yellow);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .back-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    background: rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+
+  .back-btn:hover { background: rgba(0,0,0,0.18); }
+
+  .page-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--text-dark);
+  }
+
+  .sections-container {
+    padding: 40px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .section-block {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .section-heading {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+    padding: 16px 24px;
+    background: var(--header-blue);
+    letter-spacing: 0.3px;
+    color: var(--text-dark);
+  }
+
+  .words-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .words-table thead th {
+    background: #f0f0f0;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 10px 18px;
+    text-align: left;
+    color: #555;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .words-table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.1s;
+  }
+
+  .words-table tbody tr:last-child { border-bottom: none; }
+  .words-table tbody tr:hover { background: #fafaf6; }
+
+  .words-table td {
+    padding: 13px 18px;
+    font-size: 0.95rem;
+    vertical-align: top;
+  }
+
+  .td-word {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: #1a1a1a;
+    min-width: 180px;
+  }
+
+  .td-pos {
+    font-style: italic;
+    color: #888;
+    font-size: 0.85rem;
+    min-width: 60px;
+  }
+
+  .td-translation {
+    font-weight: 600;
+    color: #333;
+    min-width: 180px;
+  }
+
+  .td-note {
+    color: #777;
+    font-size: 0.88rem;
+  }
+
+  /* Coming soon pages */
+  #sports-page, #culture-page, #medicine-page {
+    display: none;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  .coming-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 20px;
+    color: #888;
+  }
+
+  .coming-soon-icon {
+    font-size: 4rem;
+  }
+
+  .coming-soon h2 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: #aaa;
+  }
+
+  @media (max-width: 600px) {
+    .site-title-wrap { padding: 22px 30px 28px; }
+    .topic-btn { padding: 18px 30px; min-width: 140px; }
+    .words-table thead { display: none; }
+    .words-table td { display: block; padding: 6px 16px; }
+    .td-word { padding-top: 14px; font-size: 1.05rem; }
+    .td-note { padding-bottom: 12px; }
+    .td-pos::before { content: 'Part of speech: '; font-style: normal; color: #aaa; font-size: 0.78rem; }
+    .td-translation::before { content: '🇷🇺 '; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HOME PAGE -->
+<div id="home">
+  <div class="site-title-wrap">
+    <h1>Topics</h1>
+  </div>
+  <div class="topics-grid">
+    <button class="topic-btn btn-career"   onclick="showPage('career')">Career</button>
+    <button class="topic-btn btn-medicine" onclick="showPage('medicine')">Medicine</button>
+    <button class="topic-btn btn-sports"   onclick="showPage('sports')">Sports</button>
+    <button class="topic-btn btn-culture"  onclick="showPage('culture')">Culture</button>
+  </div>
+</div>
+
+<!-- CAREER PAGE -->
+<div id="career-page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <span class="page-title">Career</span>
+  </div>
+  <div class="sections-container" id="career-sections"></div>
+</div>
+
+<!-- SPORTS PAGE -->
+<div id="sports-page">
+  <div class="page-header" style="background:var(--card-green);">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <span class="page-title">Sports</span>
+  </div>
+  <div class="sections-container" id="sports-sections"></div>
+</div>
+
+<!-- CULTURE PAGE -->
+<div id="culture-page">
+  <div class="page-header" style="background:var(--card-orange);">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <span class="page-title">Culture</span>
+  </div>
+  <div class="coming-soon">
+    <div class="coming-soon-icon">🎭</div>
+    <h2>Coming soon...</h2>
+  </div>
+</div>
+
+<!-- MEDICINE PAGE -->
+<div id="medicine-page">
+  <div class="page-header" style="background:var(--card-pink);">
+    <button class="back-btn" onclick="showPage('home')">← Back</button>
+    <span class="page-title">Medicine</span>
+  </div>
+  <div class="sections-container" id="medicine-sections"></div>
+</div>
+
+<script>
+const CAREER_DATA = {"A — Work & Employment":[{"word":"career","pos":"n","translation":"карьера","note":"профессия, жизненный путь"},{"word":"job","pos":"n","translation":"работа, должность","note":"оплачиваемая позиция"},{"word":"line","pos":"n","translation":"сфера деятельности","note":"область работы"},{"word":"occupation","pos":"n","translation":"занятие, профессия","note":"род деятельности"},{"word":"position","pos":"n","translation":"должность, пост","note":"служебное положение"},{"word":"post","pos":"n","translation":"должность, пост","note":"позиция с оплатой"},{"word":"profession","pos":"n","translation":"профессия","note":"профессиональная деятельность"},{"word":"trade","pos":"n","translation":"ремесло, торговля","note":"профессия или торговля"},{"word":"vocation","pos":"n","translation":"призвание","note":"природная склонность к работе"},{"word":"work","pos":"n","translation":"работа, труд","note":"uncountable noun"},{"word":"employment","pos":"n","translation":"занятость, работа","note":"официальная работа"},{"word":"employer","pos":"n","translation":"работодатель","note":"лицо или компания, нанимающая других"},{"word":"employee","pos":"n","translation":"работник, сотрудник","note":"человек, работающий по найму"},{"word":"to employ","pos":"v","translation":"нанимать","note":"давать работу за оплату"},{"word":"the unemployed","pos":"n","translation":"безработные","note":"люди без работы"},{"word":"unemployment","pos":"n","translation":"безработица","note":"состояние без работы"},{"word":"to achieve","pos":"v","translation":"достигать","note":"добиваться результата усилиями"},{"word":"to dismiss / to sack","pos":"v","translation":"увольнять","note":"снимать с должности"},{"word":"to manage","pos":"v","translation":"управлять; справляться","note":"руководить; уметь обходиться"},{"word":"to quit","pos":"v","translation":"бросать, увольняться","note":"покидать работу"},{"word":"to hand in / give notice","pos":"v","translation":"подавать заявление об уходе","note":"официально уведомить об уходе"},{"word":"to provide","pos":"v","translation":"обеспечивать","note":"снабжать, предоставлять"},{"word":"to retire","pos":"v","translation":"уходить на пенсию","note":"прекращать работу по возрасту"},{"word":"to resign","pos":"v","translation":"уходить в отставку","note":"добровольно покидать должность"},{"word":"resignation","pos":"n","translation":"отставка, заявление об уходе","note":"акт или письмо об уходе"},{"word":"to earn / make money","pos":"v","translation":"зарабатывать деньги","note":"получать деньги за труд"},{"word":"income","pos":"n","translation":"доход","note":"деньги за определённый период"},{"word":"promotion","pos":"n","translation":"повышение по службе","note":"переход на более высокую должность"},{"word":"to promote","pos":"v","translation":"повышать в должности","note":"давать более высокий ранг"},{"word":"profit","pos":"n","translation":"прибыль","note":"финансовый доход в бизнесе"},{"word":"salary","pos":"n","translation":"зарплата (оклад)","note":"ежемесячная оплата труда"},{"word":"wages","pos":"n","translation":"заработная плата","note":"еженедельная оплата труда"},{"word":"raise (AmE) / rise (BrE)","pos":"n","translation":"повышение зарплаты","note":"увеличение оклада"}],"B — Right One for the Job":[{"word":"ambitious","pos":"adj","translation":"честолюбивый, амбициозный","note":"стремящийся к успеху"},{"word":"ambition","pos":"n","translation":"честолюбие, амбиция","note":"стремление к успеху"},{"word":"bored","pos":"adj","translation":"скучающий","note":"испытывающий скуку"},{"word":"boring","pos":"adj","translation":"скучный","note":"вызывающий скуку"},{"word":"committed","pos":"adj","translation":"преданный, целеустремлённый","note":"полностью отданный делу"},{"word":"considerate","pos":"adj","translation":"внимательный, чуткий","note":"учитывающий чувства других"},{"word":"cruel","pos":"adj","translation":"жестокий","note":"причиняющий боль, безжалостный"},{"word":"efficient","pos":"adj","translation":"эффективный, компетентный","note":"хорошо выполняющий работу"},{"word":"expert","pos":"adj/n","translation":"опытный; эксперт","note":"специалист с особыми знаниями"},{"word":"experienced","pos":"adj","translation":"опытный","note":"имеющий большой опыт"},{"word":"enthusiastic","pos":"adj","translation":"воодушевлённый","note":"проявляющий сильный интерес"},{"word":"generous","pos":"adj","translation":"щедрый","note":"охотно дающий, великодушный"},{"word":"honest","pos":"adj","translation":"честный","note":"не лжёт и не обманывает"},{"word":"ignorant","pos":"adj","translation":"невежественный","note":"не имеющий знаний"},{"word":"incompetent","pos":"adj","translation":"некомпетентный","note":"не способный делать работу"},{"word":"indifferent","pos":"adj","translation":"равнодушный","note":"не проявляющий интереса"},{"word":"just","pos":"adj","translation":"справедливый","note":"беспристрастный, объективный"},{"word":"motivated","pos":"adj","translation":"мотивированный","note":"побуждаемый к действию"},{"word":"punctual","pos":"adj","translation":"пунктуальный","note":"всегда приходящий вовремя"},{"word":"patient","pos":"adj","translation":"терпеливый","note":"способный долго ждать"},{"word":"qualified","pos":"adj","translation":"квалифицированный","note":"имеющий нужные навыки/диплом"},{"word":"reliable","pos":"adj","translation":"надёжный","note":"которому можно доверять"},{"word":"responsible","pos":"adj","translation":"ответственный","note":"обязанный заботиться о чём-либо"},{"word":"receptive (to new ideas)","pos":"adj","translation":"восприимчивый","note":"готовый принимать новые идеи"},{"word":"self-confident","pos":"adj","translation":"уверенный в себе","note":"верящий в свои силы"},{"word":"self-confidence","pos":"n","translation":"уверенность в себе","note":"вера в собственные силы"},{"word":"self-important","pos":"adj","translation":"самонадеянный","note":"преувеличивающий свою важность"},{"word":"skilled","pos":"adj","translation":"квалифицированный, умелый","note":"имеющий специальные навыки"},{"word":"tactful","pos":"adj","translation":"тактичный","note":"умеющий не обидеть других"},{"word":"unfair","pos":"adj","translation":"несправедливый","note":"не честный, предвзятый"}],"C — Job Hunting":[{"word":"advertise","pos":"v","translation":"рекламировать, объявлять","note":"делать известным публично"},{"word":"advertisement","pos":"n","translation":"объявление, реклама","note":"infml: advert, ad"},{"word":"apply","pos":"v","translation":"подавать заявление","note":"делать официальный запрос"},{"word":"application","pos":"n","translation":"заявление","note":"официальный запрос (на работу и пр.)"},{"word":"appointment","pos":"n","translation":"назначение; встреча","note":"официальная встреча или должность"},{"word":"choice","pos":"n","translation":"выбор","note":"акт выбора"},{"word":"Curriculum Vitae (CV)","pos":"n","translation":"резюме (брит.)","note":"краткое описание карьеры"},{"word":"resume (AmE)","pos":"n","translation":"резюме (амер.)","note":"краткое описание карьеры"},{"word":"decision","pos":"n","translation":"решение","note":"принятое решение"},{"word":"interview","pos":"n","translation":"собеседование, интервью","note":"встреча для оценки кандидата"},{"word":"job centre","pos":"n","translation":"центр занятости","note":"государственное бюро по трудоустройству"},{"word":"job description","pos":"n","translation":"должностная инструкция","note":"описание обязанностей"},{"word":"job-hunter","pos":"n","translation":"соискатель","note":"человек, ищущий работу"},{"word":"offer","pos":"n","translation":"предложение","note":"предложение работы"},{"word":"opening","pos":"n","translation":"вакансия","note":"свободная должность"},{"word":"redundant","pos":"adj","translation":"сокращённый","note":"уволенный за ненадобностью (брит.)"},{"word":"redundancy","pos":"n","translation":"сокращение (штата)","note":"увольнение за ненадобностью"},{"word":"short list","pos":"n","translation":"список отобранных кандидатов","note":"финальный список на должность"},{"word":"vacancy","pos":"n","translation":"вакансия","note":"незанятая должность"}],"D — Teaching as a Career":[{"word":"creative","pos":"adj","translation":"творческий","note":"обладающий способностью создавать"},{"word":"informal","pos":"adj","translation":"неформальный","note":"не официальный, непринуждённый"},{"word":"instructive","pos":"adj","translation":"поучительный, познавательный","note":"дающий полезные знания"},{"word":"discipline","pos":"n","translation":"дисциплина","note":"порядок и соблюдение правил"},{"word":"disciplinary","pos":"adj","translation":"дисциплинарный","note":"связанный с дисциплиной"},{"word":"a breach of discipline","pos":"n","translation":"нарушение дисциплины","note":"нарушение правил поведения"},{"word":"discourage","pos":"v","translation":"отбивать желание","note":"лишать уверенности или энтузиазма"},{"word":"to disrupt a class","pos":"v","translation":"срывать урок","note":"мешать ходу занятия"},{"word":"encourage","pos":"v","translation":"поощрять, воодушевлять","note":"давать смелость или уверенность"},{"word":"encouraging","pos":"adj","translation":"обнадёживающий","note":"дающий надежду и уверенность"},{"word":"encouragement","pos":"n","translation":"поощрение, поддержка","note":"действие или слова поддержки"},{"word":"fair-minded","pos":"adj","translation":"справедливый","note":"беспристрастный в суждениях"},{"word":"motive","pos":"n","translation":"мотив","note":"причина, побуждающая к действию"},{"word":"motivate","pos":"v","translation":"мотивировать","note":"побуждать к действию"},{"word":"self-respect","pos":"n","translation":"самоуважение","note":"уважение к себе"},{"word":"self-esteem","pos":"n","translation":"самооценка","note":"мнение о себе"},{"word":"sensitive","pos":"adj","translation":"чуткий, чувствительный","note":"легко воспринимающий чужие чувства"},{"word":"sympathetic","pos":"adj","translation":"сочувствующий","note":"понимающий и разделяющий чужие чувства"},{"word":"tolerance","pos":"n","translation":"терпимость","note":"уважение к чужим взглядам"},{"word":"tolerant","pos":"adj","translation":"терпимый","note":"принимающий отличные взгляды"},{"word":"vulnerable","pos":"adj","translation":"уязвимый","note":"легко поддающийся вреду или критике"}],"E — Pay and Perks":[{"word":"salary","pos":"n","translation":"оклад","note":"деньги, выплачиваемые ежемесячно на банковский счёт; для профессионалов и офисных работников"},{"word":"wages","pos":"n","translation":"заработная плата","note":"деньги, выплачиваемые еженедельно, обычно наличными; для рабочих физического труда"},{"word":"earnings","pos":"n","translation":"заработок","note":"общая сумма, заработанная работником за расчётный период; также: чистая прибыль компании после отчислений"},{"word":"income","pos":"n","translation":"доход","note":"деньги, получаемые от работы, инвестиций и т.д.; включает earned income (зарплата) и unearned income (дивиденды, проценты)"},{"word":"revenue","pos":"n","translation":"выручка, доходы","note":"а) общий доход, получаемый государством или крупной корпорацией; б) деньги, получаемые правительством через налогообложение"},{"word":"fringe benefits","pos":"n","translation":"дополнительные льготы","note":"доп. преимущества к зарплате: служебный автомобиль, бесплатное жильё и т.д.; syn: perks"},{"word":"perks","pos":"n","translation":"льготы, привилегии","note":"разговорное: fringe benefits — дополнительные блага помимо зарплаты"},{"word":"fee","pos":"n","translation":"гонорар, плата","note":"оплата услуг адвоката, врача и др. специалистов"}],"F — Vocabulary":[{"word":"achieve","pos":"v","translation":"достигать","note":"добиваться чего-то усилиями"},{"word":"achievement","pos":"n","translation":"достижение","note":"успех в деятельности"},{"word":"activity","pos":"n","translation":"деятельность, занятие","note":"syn: action, occupation, exercise"},{"word":"atmosphere","pos":"n","translation":"атмосфера, обстановка","note":"общий характер или ощущение места"},{"word":"attract","pos":"v","translation":"привлекать","note":"вызывать интерес или удовольствие"},{"word":"attraction","pos":"n","translation":"привлекательность; достопримечательность","note":"сила притяжения или то, что привлекает"},{"word":"attractive","pos":"adj","translation":"привлекательный","note":"приятный, интересный, очаровательный"},{"word":"background","pos":"n","translation":"биография, опыт","note":"образование, знания, социальное положение"},{"word":"bore","pos":"v/n","translation":"надоедать; зануда","note":"делать скучным; скучный человек"},{"word":"boss","pos":"n/v","translation":"начальник; командовать","note":"руководитель; управлять с превышением"},{"word":"bossy","pos":"adj","translation":"командирский","note":"любящий командовать другими"},{"word":"business","pos":"n","translation":"дело, бизнес, занятие","note":"профессия; торговля; задача"},{"word":"capable","pos":"adj","translation":"способный, умелый","note":"компетентный, квалифицированный"},{"word":"capability","pos":"n","translation":"способность","note":"умение хорошо выполнить работу"},{"word":"careers officer","pos":"n","translation":"консультант по профориентации","note":"дающий советы о карьере и обучении"},{"word":"career woman","pos":"n","translation":"деловая женщина","note":"женщина, ставящая карьеру на первое место"},{"word":"chair","pos":"n","translation":"должность профессора; председатель","note":"возглавлять заседание или кафедру"},{"word":"chairman","pos":"n","translation":"председатель","note":"руководящий заседанием или организацией"},{"word":"chancellor","pos":"n","translation":"ректор (амер. унив.)","note":"руководитель университета"},{"word":"charge","pos":"n","translation":"ответственность, забота","note":"быть ответственным за что-то"},{"word":"chief","pos":"n","translation":"руководитель, начальник","note":"человек с наибольшей властью"},{"word":"competence","pos":"n","translation":"компетентность","note":"способность, умение, квалификация"},{"word":"competent","pos":"adj","translation":"компетентный","note":"способный выполнять работу"},{"word":"confidence","pos":"n","translation":"уверенность","note":"вера в собственные или чужие силы"},{"word":"confident","pos":"adj","translation":"уверенный","note":"верящий в свои способности"},{"word":"curriculum vitae","pos":"n","translation":"резюме (CV)","note":"краткое описание карьеры"},{"word":"deal (dealt)","pos":"v","translation":"иметь дело; обсуждать","note":"справляться; иметь деловые отношения"},{"word":"dealer","pos":"n","translation":"торговец","note":"syn: trader"},{"word":"decide","pos":"v","translation":"решать","note":"принимать решение"},{"word":"director","pos":"n","translation":"директор, руководитель","note":"член совета директоров компании"},{"word":"dismiss","pos":"v","translation":"увольнять; отвергать","note":"снимать с должности; считать несущественным"},{"word":"dismissal","pos":"n","translation":"увольнение","note":"акт снятия с должности"},{"word":"dole","pos":"n","translation":"пособие по безработице (брит.)","note":"государственная выплата безработным"},{"word":"earn","pos":"v","translation":"зарабатывать","note":"получать деньги за работу"},{"word":"earnings","pos":"n","translation":"заработок","note":"деньги, полученные за труд"},{"word":"efficiency","pos":"n","translation":"эффективность","note":"syn: capability, effectiveness, competence"},{"word":"efficiently","pos":"adv","translation":"эффективно","note":"компетентным образом"},{"word":"executive","pos":"n","translation":"руководитель (в бизнесе)","note":"лицо с управленческими полномочиями"},{"word":"experience","pos":"n","translation":"опыт; переживание","note":"знания от практики; событие, влияющее на человека"},{"word":"fair","pos":"adj","translation":"справедливый","note":"syn: just; ant: unfair"},{"word":"fairly","pos":"adv","translation":"справедливо; довольно","note":"честно; в определённой мере"},{"word":"head","pos":"n","translation":"руководитель, глава","note":"главный человек в группе или организации"},{"word":"industrious","pos":"adj","translation":"трудолюбивый","note":"syn: hard-working, diligent"},{"word":"involve","pos":"v","translation":"включать; вовлекать","note":"требовать как условие; заставлять участвовать"},{"word":"job satisfaction","pos":"n","translation":"удовлетворённость работой","note":"удовлетворение от выполнения работы"},{"word":"job-hopper","pos":"n","translation":"летун (часто меняющий работу)","note":"человек, часто меняющий места работы"},{"word":"living","pos":"n","translation":"средства к существованию","note":"то, как или на что человек живёт"},{"word":"management","pos":"n","translation":"управление, руководство","note":"контроль и организация бизнеса"},{"word":"moonlighter","pos":"n","translation":"совместитель","note":"человек с дополнительной работой"},{"word":"moonlighting","pos":"n","translation":"работа по совместительству","note":"дополнительная работа помимо основной"},{"word":"notice","pos":"n","translation":"уведомление об увольнении","note":"предупреждение о прекращении работы"},{"word":"prestigious","pos":"adj","translation":"престижный","note":"имеющий высокую репутацию"},{"word":"principal","pos":"n","translation":"директор (школы/вуза)","note":"руководитель учебного заведения"},{"word":"profitable","pos":"adj","translation":"прибыльный","note":"syn: beneficial, gainful"},{"word":"resign","pos":"v","translation":"уходить в отставку","note":"официально покидать должность"},{"word":"responsibility","pos":"n","translation":"ответственность","note":"syn: duty, obligation, commitment"},{"word":"rise","pos":"n","translation":"повышение зарплаты","note":"увеличение оклада (BrE; AmE: raise)"},{"word":"self-control","pos":"n","translation":"самоконтроль","note":"способность контролировать своё поведение"},{"word":"self-discipline","pos":"n","translation":"самодисциплина","note":"тренировка самого себя"},{"word":"self-reliant","pos":"adj","translation":"самостоятельный","note":"уверенный в собственных силах"},{"word":"skill","pos":"n","translation":"навык, умение","note":"способность делать что-то хорошо"},{"word":"skilful","pos":"adj","translation":"умелый","note":"обладающий мастерством"},{"word":"tough","pos":"adj","translation":"трудный; выносливый","note":"сложный; способный переносить трудности"},{"word":"vacant","pos":"adj","translation":"свободный, незанятый","note":"не заполненный, пустой"},{"word":"vary","pos":"v","translation":"различаться, меняться","note":"быть разным, изменяться"},{"word":"varied","pos":"adj","translation":"разнообразный","note":"различных видов, многообразный"},{"word":"various","pos":"adj","translation":"различный, разнообразный","note":"нескольких видов, несхожих друг с другом"},{"word":"wage-earner","pos":"n","translation":"наёмный работник","note":"человек, работающий за зарплату"}]};
+
+function buildCareerPage() {
+  const container = document.getElementById('career-sections');
+  if (container.children.length > 0) return; // already built
+  for (const [section, words] of Object.entries(CAREER_DATA)) {
+    const block = document.createElement('div');
+    block.className = 'section-block';
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    heading.textContent = section;
+    block.appendChild(heading);
+    const table = document.createElement('table');
+    table.className = 'words-table';
+    table.innerHTML = `<thead><tr>
+      <th>Word</th><th>POS</th><th>Translation</th><th>Note</th>
+    </tr></thead>`;
+    const tbody = document.createElement('tbody');
+    words.forEach(w => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="td-word">${w.word}</td>
+        <td class="td-pos">${w.pos}</td>
+        <td class="td-translation">${w.translation}</td>
+        <td class="td-note">${w.note}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    block.appendChild(table);
+    container.appendChild(block);
+  }
+}
+
+const MEDICINE_DATA = {
+  "Unit 1 — A: Feeling Unwell (Focus Vocabulary)": [
+    {word:"ailment",pos:"n",translation:"недуг, болезнь",note:"лёгкое или незначительное заболевание"},
+    {word:"disease",pos:"n",translation:"болезнь, заболевание",note:"болезнь тела или разума, вызванная инфекцией или внутренним расстройством"},
+    {word:"illness",pos:"n",translation:"болезнь, нездоровье",note:"состояние нездоровья; syn: ailment, malady"},
+    {word:"ill",pos:"adj",translation:"больной, нездоровый",note:"be / fall / be taken ill (with); desperately / seriously / incurably ill"},
+    {word:"malady",pos:"n",translation:"недуг, болезнь",note:"(fml) disease, illness; also fig"},
+    {word:"sickness",pos:"n",translation:"болезнь, нездоровье",note:"air- / sea- / travel- / motion- / carsickness"},
+    {word:"airsickness",pos:"n",translation:"воздушная болезнь",note:"тошнота при полёте"},
+    {word:"motion sickness",pos:"n",translation:"укачивание",note:"тошнота при движении в транспорте"},
+    {word:"seasickness",pos:"n",translation:"морская болезнь",note:"тошнота на море"},
+    {word:"sick",pos:"adj",translation:"больной; тошнотный",note:"1. physically/mentally unwell; syn: ill. 2. likely to vomit; nauseous. 3. (infml) bored with smth"},
+    {word:"to ache",pos:"v",translation:"болеть (тупой болью)",note:"to suffer from a continuous dull pain; My jaw aches / is aching"},
+    {word:"bleeding",pos:"n",translation:"кровотечение",note:"выделение крови"},
+    {word:"bruise",pos:"n",translation:"синяк, ушиб",note:"кровоподтёк под кожей"},
+    {word:"to breathe",pos:"v",translation:"дышать",note:"to breathe in/out; Breathe in deeply, please"},
+    {word:"breath",pos:"n",translation:"дыхание, вдох",note:"to hold one's breath; to be out of/short of breath; to take a breath"},
+    {word:"to cough",pos:"v/n",translation:"кашлять; кашель",note:"to have a bad/heavy/dry/persistent cough; cough medicine"},
+    {word:"to cut",pos:"v",translation:"порезать",note:"повредить режущим предметом"},
+    {word:"to die",pos:"v",translation:"умирать",note:"syn: (fml) pass away; to die of an illness / from a wound"},
+    {word:"death",pos:"n",translation:"смерть",note:"death rate; death blow; to cause death"},
+    {word:"dizziness",pos:"n",translation:"головокружение",note:"I suffer from dizziness"},
+    {word:"dizzy",pos:"adj",translation:"страдающий головокружением",note:"unable to balance; confused; to feel/be dizzy"},
+    {word:"to faint",pos:"v",translation:"падать в обморок",note:"to lose consciousness because of shock, loss of blood, etc.; He fainted from hunger"},
+    {word:"fever",pos:"n",translation:"жар, лихорадка",note:"1. abnormally high body temperature; to have a high/slight/constant fever; to reduce fever. 2. a specified disease in which fever occurs"},
+    {word:"feverish",pos:"adj",translation:"лихорадочный",note:"having a fever; The child's body felt feverish"},
+    {word:"giddiness",pos:"n",translation:"головокружение",note:"A wave of giddiness swept over her"},
+    {word:"giddy",pos:"adj",translation:"кружащийся (о голове)",note:"a feeling slightly sick and unable to balance because everything seems to be moving"},
+    {word:"to hurt",pos:"v",translation:"причинять боль; болеть",note:"1. cause a bodily injury or pain; I hurt my leg. It hurts to cough. 2. distress; upset. 3. to do harm; to damage"},
+    {word:"to inflame",pos:"v",translation:"воспалять(ся)",note:"вызывать воспаление"},
+    {word:"to injure",pos:"v",translation:"причинять вред, ранить",note:"to injure badly/seriously/severely/slightly; to injure one's health"},
+    {word:"injury",pos:"n",translation:"травма, ранение",note:"slight/serious injury; He suffered severe injuries to the head"},
+    {word:"to pain",pos:"v",translation:"причинять боль",note:"вызывать физическое или душевное страдание"},
+    {word:"painful joints",pos:"n",translation:"болезненные суставы",note:"суставы, вызывающие боль"},
+    {word:"rash",pos:"n",translation:"сыпь",note:"кожные высыпания"},
+    {word:"to shiver",pos:"v",translation:"дрожать",note:"(with smth) to tremble, esp from cold or fear; syn: tremble, shudder"},
+    {word:"to sneeze",pos:"v/n",translation:"чихать; чихание",note:"a sudden uncontrollable noisy outburst of air through the nose; Coughs and sneezes spread diseases"},
+    {word:"sore",pos:"adj",translation:"болезненный, воспалённый",note:"(of a part of the body) hurting when touched or used; syn: painful, aching; a sore head/throat/knee"},
+    {word:"to swallow",pos:"v",translation:"глотать",note:"проглатывать"},
+    {word:"to swell",pos:"v",translation:"опухать, отекать",note:"увеличиваться в размере из-за болезни или травмы"},
+    {word:"temperature",pos:"n",translation:"температура",note:"high body temperature as a sign of illness"},
+    {word:"to vomit",pos:"v",translation:"рвать (тошнота)",note:"forcefully expel the contents of the stomach through the mouth"}
+  ],
+  "Unit 1 — A: Diseases & Conditions": [
+    {word:"AIDS",pos:"abbr",translation:"СПИД",note:"Acquired Immune Deficiency Syndrome; an AIDS victim; AIDS is a fatal disease"},
+    {word:"an allergy",pos:"n",translation:"аллергия",note:"an unfavourable reaction to certain foods, insect bites, etc.; to be allergic to smth"},
+    {word:"allergic",pos:"adj",translation:"аллергический",note:"to have an allergic rash; She is allergic to sharp smells"},
+    {word:"appendicitis",pos:"n",translation:"аппендицит",note:"воспаление аппендикса"},
+    {word:"asthma",pos:"n",translation:"астма",note:"хроническое заболевание дыхательных путей"},
+    {word:"bronchitis",pos:"n",translation:"бронхит",note:"воспаление бронхов"},
+    {word:"cancer",pos:"n",translation:"рак",note:"злокачественное онкологическое заболевание"},
+    {word:"a chill",pos:"n",translation:"озноб; простуда",note:"лёгкое недомогание с дрожью"},
+    {word:"a cold",pos:"n",translation:"простуда",note:"an infectious illness of the nose or throat with sneezing, coughing; a bad/heavy/slight cold; to catch (a) cold"},
+    {word:"concussion",pos:"n",translation:"сотрясение мозга",note:"повреждение мозга от удара"},
+    {word:"diarrhoea",pos:"n",translation:"диарея",note:"расстройство кишечника"},
+    {word:"diabetes",pos:"n",translation:"диабет",note:"заболевание поджелудочной железы"},
+    {word:"a fever",pos:"n",translation:"лихорадка",note:"болезнь с высокой температурой"},
+    {word:"flu / influenza",pos:"n",translation:"грипп",note:"инфекционное заболевание"},
+    {word:"food poisoning",pos:"n",translation:"пищевое отравление",note:"заболевание от заражённой пищи"},
+    {word:"a heart attack",pos:"n",translation:"сердечный приступ",note:"острое нарушение кровоснабжения сердца"},
+    {word:"indigestion",pos:"n",translation:"несварение желудка",note:"проблемы с пищеварением"},
+    {word:"inflammation",pos:"n",translation:"воспаление",note:"inflammation of the lungs; syn: pneumonia"},
+    {word:"insomnia",pos:"n",translation:"бессонница",note:"хроническое нарушение сна"},
+    {word:"malaria",pos:"n",translation:"малярия",note:"инфекционное заболевание, передаваемое комарами"},
+    {word:"malnutrition",pos:"n",translation:"недоедание, истощение",note:"нехватка питательных веществ"},
+    {word:"measles",pos:"n",translation:"корь",note:"инфекционное заболевание с сыпью"},
+    {word:"a nervous breakdown",pos:"n",translation:"нервный срыв",note:"острое психическое расстройство"},
+    {word:"pneumonia",pos:"n",translation:"пневмония",note:"воспаление лёгких"},
+    {word:"rheumatism",pos:"n",translation:"ревматизм",note:"болезнь суставов и мышц"},
+    {word:"scarlet fever",pos:"n",translation:"скарлатина",note:"инфекционная болезнь с сыпью"},
+    {word:"stomach ulcer",pos:"n",translation:"язва желудка",note:"язвенное поражение слизистой желудка"},
+    {word:"a stroke",pos:"n",translation:"инсульт",note:"острое нарушение мозгового кровообращения"},
+    {word:"tuberculosis (TB)",pos:"n",translation:"туберкулёз",note:"инфекционное заболевание лёгких"},
+    {word:"typhoid",pos:"n",translation:"тиф",note:"инфекционное заболевание"}
+  ],
+  "Unit 1 — B: Going to the Doctor's (Focus Vocabulary)": [
+    {word:"doctor",pos:"n",translation:"врач, доктор",note:"общее название медицинского специалиста"},
+    {word:"general practitioner (GP)",pos:"n",translation:"врач общей практики",note:"терапевт, семейный врач"},
+    {word:"gynaecologist / women's doctor",pos:"n",translation:"гинеколог",note:"специалист по женскому здоровью"},
+    {word:"surgeon",pos:"n",translation:"хирург",note:"врач, проводящий операции"},
+    {word:"p(a)ediatrician / children's doctor",pos:"n",translation:"педиатр",note:"детский врач"},
+    {word:"physician",pos:"n",translation:"врач (терапевт)",note:"специалист в области внутренней медицины"},
+    {word:"psychiatrist",pos:"n",translation:"психиатр",note:"специалист по психическим расстройствам"},
+    {word:"patient",pos:"n",translation:"пациент",note:"a person who's receiving medical treatment; to cure/handle/treat a patient"},
+    {word:"midwife",pos:"n",translation:"акушерка",note:"медработник, помогающий при родах"},
+    {word:"nurse",pos:"n",translation:"медсестра/медбрат",note:"медицинский работник, ухаживающий за пациентами"},
+    {word:"optician",pos:"n",translation:"оптик",note:"специалист по зрению и очкам"},
+    {word:"bandage",pos:"n",translation:"бинт, повязка",note:"полоска ткани для перевязки ран"},
+    {word:"crutch",pos:"n",translation:"костыль",note:"опора для ходьбы при травме ноги"},
+    {word:"dressing",pos:"n",translation:"перевязочный материал",note:"1. bandage, ointment for treating a wound; to apply/remove/replace a dressing. 2. sauce for food"},
+    {word:"drops",pos:"n",translation:"капли",note:"жидкое лекарство в каплях"},
+    {word:"gargle",pos:"v/n",translation:"полоскать горло; полоскание",note:"промывать горло жидкостью"},
+    {word:"mixture",pos:"n",translation:"микстура",note:"жидкое лекарство"},
+    {word:"mustard plaster",pos:"n",translation:"горчичник",note:"лечебный пластырь с горчицей"},
+    {word:"cure",pos:"v",translation:"лечить, вылечивать",note:"(smb of smth) to make smb healthy again; to cure a person of a disease / an illness"},
+    {word:"curable",pos:"adj",translation:"излечимый",note:"that can be cured; Ant: incurable"},
+    {word:"heal",pos:"v",translation:"заживать; исцелять",note:"(over/up) to cause smth to become healthy again; The cut soon healed up/over"},
+    {word:"injection",pos:"n",translation:"инъекция, укол",note:"an injection against cholera; to prescribe a course of injections; to give an injection"},
+    {word:"operate",pos:"v",translation:"оперировать",note:"to perform a surgical operation; to operate on smb for smth"},
+    {word:"operation",pos:"n",translation:"операция",note:"to undergo/perform/have an operation for smth"},
+    {word:"recover",pos:"v",translation:"выздоравливать",note:"to return to a normal state of health, mind, etc.; to recover from the shock/surprise/strain"},
+    {word:"recovery",pos:"n",translation:"выздоровление",note:"to make a quick/slow/good recovery; to be well on the road/way to recovery"},
+    {word:"remedy",pos:"n",translation:"лекарство, средство",note:"(for smth) (fml) treatment, medicine that cures or relieves a disease or pain; I often use herbal remedies"},
+    {word:"remedial",pos:"adj",translation:"лечебный",note:"providing a remedy or cure; to undergo remedial treatment therapy"},
+    {word:"therapy",pos:"n",translation:"терапия",note:"лечение заболеваний немедикаментозными методами"},
+    {word:"treat",pos:"v",translation:"лечить",note:"оказывать медицинскую помощь"},
+    {word:"treatment",pos:"n",translation:"лечение",note:"медицинская помощь и уход"},
+    {word:"ointment",pos:"n",translation:"мазь",note:"smooth greasy paste rubbed on the skin to heal injuries; Rub the ointment in twice a day!"},
+    {word:"painkiller",pos:"n",translation:"обезболивающее",note:"medicine for lessening pain"},
+    {word:"pill",pos:"n",translation:"таблетка",note:"tablet; vitamin pills; to take pills; side-effects of the pill"},
+    {word:"plaster",pos:"n",translation:"пластырь",note:"лейкопластырь для заклейки ран"},
+    {word:"powder",pos:"n",translation:"порошок (лекарство)",note:"лекарство в форме порошка"},
+    {word:"tranquilliser",pos:"n",translation:"успокоительное",note:"лекарство для снижения тревоги"},
+    {word:"vitamin",pos:"n",translation:"витамин",note:"vitamin pills; vitamins C and E protect against heart disease"},
+    {word:"appointment",pos:"n",translation:"запись к врачу; приём",note:"to have/fix/make an appointment with smb; to keep/break/ask for an appointment; Interviews are by appointment only"},
+    {word:"diagnose",pos:"v",translation:"диагностировать",note:"to determine the nature of a disease by observing its symptoms; The doctor diagnosed the illness as diphtheria"},
+    {word:"diagnosis",pos:"n",translation:"диагноз",note:"(pl -es); an accurate/skilful diagnosis; to make a diagnosis"},
+    {word:"condition",pos:"n",translation:"состояние (здоровья)",note:"1. the present state of a thing; to be in good/poor condition. 2. physical fitness, health: stable/satisfactory/critical/serious condition. 3. a thing on which another thing depends"},
+    {word:"consult",pos:"v",translation:"консультироваться",note:"(smb about smth) to go to (a person) for advice; to consult a doctor"},
+    {word:"complain",pos:"v",translation:"жаловаться",note:"(to smb about/of smth) to say that one is dissatisfied, unhappy; The patient is complaining of an acute pain"},
+    {word:"complaint",pos:"n",translation:"жалоба; болезнь",note:"1. complaining. 2. illness; disease; a heart complaint; childhood complaints = illnesses common among children"},
+    {word:"complication",pos:"n",translation:"осложнение",note:"1. smth that adds new difficulties. 2. a new illness or new development of an illness; to avoid/cause complications"},
+    {word:"check-up",pos:"n",translation:"медосмотр",note:"a thorough examination, esp. a medical one; to go for/have a check-up"},
+    {word:"check (up)",pos:"v",translation:"проверять (здоровье)",note:"to examine"},
+    {word:"examine",pos:"v",translation:"осматривать",note:"to inspect carefully (a patient or part of his body); to examine carefully/thoroughly; to have one's teeth/eyes examined"},
+    {word:"examination",pos:"n",translation:"осмотр, обследование",note:"syn: inspection, check; a medical examination by a doctor"},
+    {word:"prescribe",pos:"v",translation:"выписывать (рецепт)",note:"(smth for smb) to advise or order the use of a course of treatment; Do not exceed the prescribed dose!"},
+    {word:"prescription",pos:"n",translation:"рецепт",note:"to write out/fill/make up a prescription; to have the prescription made up"},
+    {word:"test",pos:"n",translation:"анализ, тест",note:"медицинское обследование"},
+    {word:"X-ray",pos:"n",translation:"рентген",note:"рентгеновский снимок"},
+    {word:"medicine",pos:"n",translation:"медицина; лекарство",note:"1. the prevention and cure of a disease; to study/practise medicine. 2. a substance used in curing disease; cough medicine(s)"},
+    {word:"medical",pos:"adj",translation:"медицинский",note:"a medical examination; medical student/school; medical care/attention; medical service/equipment/record"},
+    {word:"medicinal",pos:"adj",translation:"лечебный",note:"medicinal herbs/springs; to be used for medicinal purposes"}
+  ],
+  "Unit 1 — C: At the Dentist's": [
+    {word:"dentist",pos:"n",translation:"стоматолог",note:"врач по зубам"},
+    {word:"dental",pos:"adj",translation:"зубной, стоматологический",note:"относящийся к зубам"},
+    {word:"a tooth",pos:"n",translation:"зуб",note:"(pl teeth)"},
+    {word:"a false tooth",pos:"n",translation:"вставной зуб",note:"искусственный зуб"},
+    {word:"an eye tooth",pos:"n",translation:"клык",note:"верхний клык"},
+    {word:"a wisdom tooth",pos:"n",translation:"зуб мудрости",note:"третий коренной зуб"},
+    {word:"to extract",pos:"v",translation:"удалять (зуб)",note:"to take or get smth out, usu. with effort or by force; to have a tooth extracted"},
+    {word:"extraction",pos:"n",translation:"удаление (зуба)",note:"a painful/painless extraction"},
+    {word:"to take out",pos:"v",translation:"вырвать (зуб)",note:"syn: to extract, to pull out"},
+    {word:"to pull (out)",pos:"v",translation:"вырвать (зуб)",note:"выдернуть зуб"},
+    {word:"to fill",pos:"v",translation:"пломбировать",note:"ставить пломбу на зуб"},
+    {word:"to stop",pos:"v",translation:"запломбировать",note:"остановить разрушение зуба пломбой"},
+    {word:"a toothache",pos:"n",translation:"зубная боль",note:"боль в зубе; syn: ache compounds: backache, earache, heartache, stomach-ache, headache"},
+    {word:"to brush one's teeth",pos:"v",translation:"чистить зубы",note:"ежедневная гигиена зубов"},
+    {word:"to have one's teeth cleaned at the dentist's",pos:"v",translation:"чистить зубы у стоматолога",note:"профессиональная чистка зубов"},
+    {word:"to clean smb's teeth",pos:"v",translation:"чистить чьи-то зубы",note:"профессиональная чистка"},
+    {word:"cavity",pos:"n",translation:"кариес, дупло",note:"дыра в зубе от кариеса"},
+    {word:"decay",pos:"n",translation:"кариес, гниение",note:"разрушение зубной ткани"},
+    {word:"filling",pos:"n",translation:"пломба",note:"материал, которым заполняют зуб"},
+    {word:"drilling",pos:"n",translation:"сверление (зуба)",note:"бурение зуба при лечении"},
+    {word:"gum (a sore gum)",pos:"n",translation:"дёсна (воспалённая)",note:"ткань вокруг зубов"}
+  ],
+  "Unit 1 — D: In Hospital": [
+    {word:"to make / go one's rounds",pos:"v",translation:"обходить пациентов",note:"врач или медсестра осматривает палаты"},
+    {word:"ward",pos:"n",translation:"палата (больничная)",note:"комната с несколькими пациентами"},
+    {word:"ward nurse / sister",pos:"n",translation:"палатная медсестра",note:"медсестра, закреплённая за палатой"},
+    {word:"bed",pos:"n",translation:"кровать (больничная)",note:"больничная койка"},
+    {word:"bed-ridden / confined to bed",pos:"adj",translation:"прикованный к постели",note:"неспособный встать из-за болезни"},
+    {word:"to keep to one's bed",pos:"v",translation:"соблюдать постельный режим",note:"оставаться в постели по болезни"},
+    {word:"to take to one's bed",pos:"v",translation:"слечь в постель",note:"лечь в постель из-за болезни"},
+    {word:"therapy",pos:"n",translation:"терапия",note:"лечение"},
+    {word:"intensive therapy",pos:"n",translation:"интенсивная терапия",note:"реанимация, интенсивное лечение"}
+  ],
+  "Unit 2 — Social Maladies (Focus Vocabulary)": [
+    {word:"addict",pos:"n",translation:"наркоман; зависимый",note:"1. a person who is unable to stop taking drugs, alcohol, etc.; drug/alcohol addict. 2. person who is strongly interested in smth: chess/TV/football addict"},
+    {word:"addicted",pos:"adj",translation:"зависимый",note:"addicted to smth; He's addicted to smoking"},
+    {word:"addiction",pos:"n",translation:"зависимость",note:"an addiction to smth; You should overcome your addiction to football"},
+    {word:"abuse",pos:"n",translation:"злоупотребление; жестокое обращение",note:"the wrong or bad use or treatment of smth/smb; drug/alcohol abuse; an abuse of kindness/authority/trust"},
+    {word:"abuse",pos:"v",translation:"злоупотреблять",note:"to abuse alcoholic drinks"},
+    {word:"abusive",pos:"adj",translation:"оскорбительный",note:"insulting; I couldn't stand his abusive remarks"},
+    {word:"alcohol",pos:"n",translation:"алкоголь",note:"спиртные напитки"},
+    {word:"drugs",pos:"n",translation:"наркотики; лекарства",note:"1. substance used as or in a medicine; 2. substance that affects the nervous system, esp. habit-forming; to take/use/be on drugs"},
+    {word:"habit",pos:"n",translation:"привычка",note:"a thing that a person does often and almost without thinking; bad habits; eating/drinking/sleeping habits; to be in/fall into/get into the habit of doing smth; to break the habit"},
+    {word:"habitual",pos:"adj",translation:"привычный, постоянный",note:"regular, usual; habitual smoker"},
+    {word:"smoking",pos:"n",translation:"курение",note:"the harmful effects of smoking"},
+    {word:"stress",pos:"n",translation:"стресс",note:"1. mental or physical distress, difficult circumstances; mental/nervous stress; to be under/control/suffer from stress. 2. a special emphasis or significance"},
+    {word:"stressful",pos:"adj",translation:"стрессовый",note:"causing stress; I find my new job very stressful"}
+  ],
+  "Vocabulary Reference (A–S)": [
+    {word:"ache",pos:"n",translation:"тупая боль",note:"a dull, continuous pain; compounds: backache, earache, heartache, stomach-ache, toothache, headache; to suffer from headaches; My body is all aches and pains"},
+    {word:"breathless",pos:"adj",translation:"задыхающийся",note:"a breathless haste/speed/pace/attention; to be breathless with terror, wonder, etc."},
+    {word:"breathtaking",pos:"adj",translation:"захватывающий",note:"syn: very exciting, spectacular; The game/view was breathtaking"},
+    {word:"case",pos:"n",translation:"случай (болезни)",note:"1. an instance or example of occurrence; in any case; (just) in case. 2. an instance of a disease or an injury; Cases of smallpox are becoming rare"},
+    {word:"conscious",pos:"adj",translation:"находящийся в сознании",note:"awake, knowing what is going on around one; He was in a coma for days, but now he's fully conscious again"},
+    {word:"consciousness",pos:"n",translation:"сознание",note:"to lose consciousness – to faint, to pass out (coll.); to recover/regain consciousness = to come to/come round"},
+    {word:"consulting-room",pos:"n",translation:"кабинет врача",note:"a room where a doctor talks to and examines patients"},
+    {word:"deficient",pos:"adj",translation:"страдающий недостатком",note:"(in smth) lacking in smth; a diet deficient in vitamins; He's totally deficient in humour"},
+    {word:"deficiency",pos:"n",translation:"недостаток, дефицит",note:"(in/of smth); a deficiency of protein; mental deficiency; Vitamin deficiency can lead to illness"},
+    {word:"drugstore",pos:"n",translation:"аптека (амер.)",note:"(AmE) a chemist's shop which also sells many kinds of goods and often serves light meals"},
+    {word:"factor",pos:"n",translation:"фактор",note:"a fact, circumstance that helps to produce a result; environmental factors; the determining/human factor; a risk factor"},
+    {word:"faint",pos:"n",translation:"обморок",note:"in a dead faint = completely unconscious"},
+    {word:"feeling",pos:"n",translation:"ощущение, чувство",note:"a feeling of hunger/joy/gratitude/discomfort/satisfaction; to hurt smb's feelings"},
+    {word:"fit",pos:"n",translation:"приступ (болезни)",note:"a sudden attack of illness; a fit of coughing/hysterics; a fainting fit; by/in fits and starts = in irregular bursts of activity"},
+    {word:"fit",pos:"adj",translation:"здоровый, в форме",note:"syn: healthy; in good shape; to keep fit; to be fit for/to; to be as fit as a fiddle = to be in very good physical condition"},
+    {word:"harm",pos:"n",translation:"вред, ущерб",note:"syn: damage, injury; to do harm; These pills will do you no harm; to do more harm than good; There's no harm in doing it"},
+    {word:"harmful",pos:"adj",translation:"вредный",note:"Ant: harmless; the harmful effects of smoking"},
+    {word:"infect",pos:"v",translation:"заражать",note:"(esp passive) to cause smb/smth to have a disease; an infected wound; to be infected with; (fig) a mind infected with prejudices/ideas"},
+    {word:"infection",pos:"n",translation:"инфекция",note:"a disease caused by a micro-organism; to spread by infection; to spread/pass on an infection; a waterborne infection"},
+    {word:"infectious",pos:"adj",translation:"инфекционный, заразный",note:"syn: catching (not before a noun), contagious; infectious diseases"},
+    {word:"inflamed",pos:"adj",translation:"воспалённый",note:"(by/with smth) red, hot and sore (e.g. because of infection); inflamed eyes; a nose inflamed by an infection"},
+    {word:"inject",pos:"v",translation:"делать инъекцию",note:"to force (a drug) into smb/smth with a syringe = to give a needle (infml); to inject penicillin into smb's arm/leg; (also fig) Try to inject a bit of enthusiasm into your work"},
+    {word:"malinger",pos:"v",translation:"симулировать болезнь",note:"to pretend to be ill in order to avoid work or duty; syn: feign a sickness"},
+    {word:"malingerer",pos:"n",translation:"симулянт",note:"a person who malingers"},
+    {word:"medical man",pos:"n",translation:"врач",note:"a practitioner; syn: doctor, general practitioner (GP)"},
+    {word:"medicine chest",pos:"n",translation:"аптечка",note:"a box containing medicines, bandages, etc."},
+    {word:"mortal",pos:"adj",translation:"смертный; смертельный",note:"1. causing death; fatal; a mortal wound/injury. 2. that must die; All human beings are mortal; infant mortality"},
+    {word:"mortality",pos:"n",translation:"смертность",note:"mortality rate"},
+    {word:"operating-theatre",pos:"n",translation:"операционный зал",note:"a room used for surgical operations"},
+    {word:"pain",pos:"n",translation:"боль",note:"the suffering of mind or body; an acute/constant/severe/sharp/dull/steady/sudden pain; to be in pain; to cause/stand/feel/experience a pain; to ease/soothe/relieve/kill a pain"},
+    {word:"painful",pos:"adj",translation:"болезненный",note:"a painful blow/memory/experience; Ant: painless; a painless injection/extraction (of a tooth)"},
+    {word:"in-patient",pos:"n",translation:"стационарный пациент",note:"a person who lives in hospital while receiving treatment; Ant: out-patient"},
+    {word:"reduce",pos:"v",translation:"уменьшать; снижать",note:"1. (from smth) (to/by smth) to make smth smaller in size, number, price, degree; to reduce one's weight/the swelling/pressure/temperature/pain. 2. (infml esp AmE) to lose weight; to diet, slim"},
+    {word:"sick-leave",pos:"n",translation:"больничный",note:"a permission to be absent from work, duty because of illness; to be granted a sick leave; to be on sick leave = to be on the sick list (infml)"},
+    {word:"sound",pos:"v",translation:"прослушивать (пациента)",note:"(fml) to test or examine (smth) listening carefully; to sound smb's chest/lungs"},
+    {word:"surgery",pos:"n",translation:"хирургия; операция",note:"1. treatment of injuries or diseases by cutting or removing parts of the body; to perform/undergo surgery; emergency/major/radical/cosmetic/open-heart surgery"},
+    {word:"the shivers",pos:"n, pl",translation:"дрожь (от страха/жара)",note:"a fit of trembling, resulting from fever or fear; She was lying in bed with a bout of the shivers"},
+    {word:"shivery",pos:"adj",translation:"дрожащий",note:"to feel shivery; There's a cold, shivery breeze from the sea"},
+    {word:"surgical",pos:"adj",translation:"хирургический",note:"surgical instruments / treatment / skills / wards"},
+    {word:"survive",pos:"v",translation:"выживать, переживать",note:"(from smth) to continue to live or exist; He survived the illness; We can't survive on $30 a week"},
+    {word:"survival",pos:"n",translation:"выживание",note:"1. surviving. 2. a person, thing, custom, belief that has survived from an earlier time"},
+    {word:"swell",pos:"v",translation:"опухать, отекать",note:"(swelled, swollen or swelled) to become larger or bulge outwards; My eyes swelled with tears; His face was swollen with toothache"},
+    {word:"swelling",pos:"n",translation:"отёк, опухоль",note:"The swelling went down. He reduced the swelling with ice-packs"},
+    {word:"temperature",pos:"n",translation:"температура",note:"to get/have/run a temperature; to raise/take smb's temperature; to bring down/reduce the temperature"},
+    {word:"test",pos:"n/v",translation:"анализ; тестировать",note:"an examination conducted for medical purposes; to have a blood test taken; to test a new medicine; to have one's eyesight tested"},
+    {word:"tooth",pos:"n",translation:"зуб",note:"(pl. teeth); false teeth; to have a tooth out; to pull/take out/extract a tooth; to fill/stop a tooth"},
+    {word:"toothache",pos:"n",translation:"зубная боль",note:"I've got (a) toothache"},
+    {word:"vital",pos:"adj",translation:"жизненно важный",note:"1. connected with or essential to life; The heart performs a vital bodily function. 2. the existence, success; a question of vital importance"},
+    {word:"vitally",pos:"adv",translation:"жизненно, крайне",note:"extremely; vitally important/necessary"},
+    {word:"vitality",pos:"n",translation:"жизненная сила, бодрость",note:"persistent energy, liveliness; The children are full of vitality"},
+    {word:"vomit",pos:"v",translation:"рвать (тошнота)",note:"to eject (food, etc. from the stomach) through the mouth; The mixture made me vomit; He vomited (up) all he had eaten = He threw up"},
+    {word:"vomitive",pos:"n",translation:"рвотное средство",note:"a remedy that helps to vomit"},
+    {word:"X-ray",pos:"n/v",translation:"рентген; делать рентген",note:"X-ray machine/therapy; chest/hand X-ray; to have one's chest X-rayed"}
+  ],
+  "Phrasal Verbs": [
+    {word:"to come / go down with",pos:"phr v",translation:"заболеть (чем-либо)",note:"to become ill with a specific illness; She's come down with flu"},
+    {word:"to get over",pos:"phr v",translation:"оправиться, выздороветь",note:"to recover from an illness or a difficult experience"},
+    {word:"to pick up",pos:"phr v",translation:"подхватить (болезнь)",note:"to catch an illness, often without realising it"},
+    {word:"to get through",pos:"phr v",translation:"пережить, преодолеть",note:"to survive a difficult experience or illness"},
+    {word:"to cut down (on)",pos:"phr v",translation:"сократить потребление",note:"to reduce the amount of smth (food, drink, smoking)"},
+    {word:"to cut out",pos:"phr v",translation:"бросить, исключить",note:"to stop eating, drinking or doing smth completely"},
+    {word:"to put on",pos:"phr v",translation:"набирать (вес)",note:"to gain weight"},
+    {word:"to take up",pos:"phr v",translation:"начать заниматься",note:"to start a new activity or habit"},
+    {word:"to pass out",pos:"phr v",translation:"потерять сознание",note:"to faint, lose consciousness; syn: to come to"},
+    {word:"to come round / to",pos:"phr v",translation:"прийти в сознание",note:"to regain consciousness after fainting"},
+    {word:"to come through",pos:"phr v",translation:"выжить, выкарабкаться",note:"to survive a serious illness or operation"},
+    {word:"to build up",pos:"phr v",translation:"укреплять (здоровье/иммунитет)",note:"to strengthen the body or immune system gradually"},
+    {word:"to fight off",pos:"phr v",translation:"побороть (болезнь)",note:"to resist and overcome an illness"},
+    {word:"to go ahead with",pos:"phr v",translation:"продолжить (операцию/лечение)",note:"to proceed with a planned medical procedure"},
+    {word:"to wear off",pos:"phr v",translation:"проходить (о боли/лекарстве)",note:"(of pain or medicine effect) to gradually disappear"},
+    {word:"to feel up to",pos:"phr v",translation:"чувствовать себя в силах",note:"to feel well enough to do smth"},
+    {word:"to try out",pos:"phr v",translation:"опробовать (лечение)",note:"to test a medicine or treatment"}
+  ],
+  "Idiomatic Expressions": [
+    {word:"to be as fit as a fiddle",pos:"idiom",translation:"быть в отличной форме",note:"to be in very good health"},
+    {word:"to feel off colour",pos:"idiom",translation:"чувствовать себя неважно",note:"to feel slightly unwell"},
+    {word:"to feel out of sorts",pos:"idiom",translation:"быть не в своей тарелке",note:"to feel slightly ill or unhappy"},
+    {word:"to feel under the weather",pos:"idiom",translation:"чувствовать себя плохо",note:"to feel slightly ill"},
+    {word:"to be out of condition",pos:"idiom",translation:"быть не в форме",note:"to be in poor physical health; syn: to be unfit"},
+    {word:"to be / feel run down",pos:"idiom",translation:"быть истощённым",note:"to feel tired and in poor health due to overwork"},
+    {word:"His / her life is hanging by a thread",pos:"idiom",translation:"его/её жизнь висит на волоске",note:"used when someone is in a very critical condition"},
+    {word:"to burn the candle at both ends",pos:"idiom",translation:"сжигать себя с обоих концов",note:"to exhaust oneself by doing too much and sleeping too little"},
+    {word:"to be out of danger / off the danger list",pos:"idiom",translation:"быть вне опасности",note:"to no longer be in a critical medical condition"},
+    {word:"to be on the mend",pos:"idiom",translation:"идти на поправку",note:"to be recovering and improving after illness"},
+    {word:"to be up / out and about",pos:"idiom",translation:"быть на ногах",note:"to be well enough to be active again after illness"},
+    {word:"to be as right as rain",pos:"idiom",translation:"быть совершенно здоровым",note:"to feel completely well and healthy again"},
+    {word:"to be as good as new",pos:"idiom",translation:"быть как новенький",note:"to be fully recovered, in perfect condition again"}
+  ]
+};
+
+function buildMedicinePage() {
+  const container = document.getElementById('medicine-sections');
+  if (container.children.length > 0) return;
+  for (const [section, words] of Object.entries(MEDICINE_DATA)) {
+    const block = document.createElement('div');
+    block.className = 'section-block';
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    heading.textContent = section;
+    block.appendChild(heading);
+    const table = document.createElement('table');
+    table.className = 'words-table';
+    table.innerHTML = `<thead><tr>
+      <th>Word</th><th>POS</th><th>Translation</th><th>Note</th>
+    </tr></thead>`;
+    const tbody = document.createElement('tbody');
+    words.forEach(w => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="td-word">${w.word}</td>
+        <td class="td-pos">${w.pos}</td>
+        <td class="td-translation">${w.translation}</td>
+        <td class="td-note">${w.note}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    block.appendChild(table);
+    container.appendChild(block);
+  }
+}
+
+const SPORTS_DATA = {
+  "Unit 1 — Popular Sports": [
+    {word:"archery",pos:"n",translation:"стрельба из лука",note:"вид спорта с луком и стрелами"},
+    {word:"artistic gymnastics (callisthenics)",pos:"n",translation:"художественная гимнастика",note:"вид спорта с упражнениями на грации и гибкости"},
+    {word:"boxing",pos:"n",translation:"бокс",note:"excellent for arms and legs; good for letting-off steam"},
+    {word:"car / motorcycle racing",pos:"n",translation:"автомобильные / мотогонки",note:"соревнования на скорость"},
+    {word:"cycling",pos:"n",translation:"велоспорт",note:"езда на велосипеде как вид спорта"},
+    {word:"diving",pos:"n",translation:"прыжки в воду; дайвинг",note:"прыжки с трамплина или подводное плавание"},
+    {word:"fencing",pos:"n",translation:"фехтование",note:"вид спорта с холодным оружием"},
+    {word:"figure-skating",pos:"n",translation:"фигурное катание",note:"катание на коньках с элементами танца"},
+    {word:"gliding",pos:"n",translation:"планёрный спорт",note:"полёты на планёре"},
+    {word:"glider",pos:"n",translation:"планёр",note:"безмоторный летательный аппарат"},
+    {word:"gymnastics",pos:"n",translation:"гимнастика",note:"marvellous for developing a sense of grace and poise; good for muscles generally"},
+    {word:"hang gliding",pos:"n",translation:"дельтапланеризм",note:"полёты на дельтаплане"},
+    {word:"mountaineering",pos:"n",translation:"альпинизм",note:"good for single-minded people; exercises arms and legs; requires calm, resourceful character"},
+    {word:"rowing and canoeing",pos:"n",translation:"гребля и каноэ",note:"водные виды спорта с вёслами"},
+    {word:"skating",pos:"n",translation:"катание на коньках",note:"great fun; good for legs, ankles and general posture; better started young"},
+    {word:"skiing",pos:"n",translation:"лыжный спорт",note:"езда на лыжах"},
+    {word:"ski-jump",pos:"n",translation:"прыжки с трамплина",note:"прыжки на лыжах с трамплина"},
+    {word:"sky diving / parachuting",pos:"n",translation:"прыжки с парашютом",note:"прыжки из самолёта с парашютом"},
+    {word:"swimming",pos:"n",translation:"плавание",note:"excellent all-year-round sport; good exercise for most parts of the body; breast stroke excellent for thigh muscles"},
+    {word:"weight-lifting",pos:"n",translation:"тяжёлая атлетика",note:"поднятие тяжестей"},
+    {word:"windsurfing",pos:"n",translation:"виндсёрфинг",note:"катание на доске с парусом по воде"},
+    {word:"wrestling",pos:"n",translation:"борьба",note:"вид единоборств"},
+    {word:"yachting",pos:"n",translation:"парусный спорт",note:"гонки на яхтах"},
+    {word:"athletics / track-and-field",pos:"n",translation:"лёгкая атлетика",note:"all branches are beneficial; requires dedication"},
+    {word:"discus / hammer / javelin throwing",pos:"n",translation:"метание диска / молота / копья",note:"виды лёгкой атлетики"},
+    {word:"high / long / triple jump",pos:"n",translation:"прыжки в высоту / длину / тройной",note:"виды прыжков в лёгкой атлетике"},
+    {word:"hurdle races",pos:"n",translation:"бег с барьерами",note:"бег через препятствия"},
+    {word:"marathon",pos:"n",translation:"марафон",note:"забег на 42,195 км"},
+    {word:"pole vault",pos:"n",translation:"прыжки с шестом",note:"вид лёгкой атлетики"},
+    {word:"to race / to run",pos:"v",translation:"участвовать в гонке / бежать",note:"соревноваться в скорости бега"},
+    {word:"shot-putting",pos:"n",translation:"толкание ядра",note:"вид лёгкой атлетики"},
+    {word:"steeplechase",pos:"n",translation:"стипль-чез; бег с препятствиями",note:"бег или скачки с препятствиями"}
+  ],
+  "Unit 1 — Popular Games": [
+    {word:"badminton",pos:"n",translation:"бадминтон",note:"игра с воланом и ракетками"},
+    {word:"basketball",pos:"n",translation:"баскетбол",note:"командная игра с мячом в корзину"},
+    {word:"cricket (BrE)",pos:"n",translation:"крикет",note:"традиционная английская игра с битой и мячом"},
+    {word:"football / soccer (AmE)",pos:"n",translation:"футбол",note:"very good for leg muscles and general fitness"},
+    {word:"golf",pos:"n",translation:"гольф",note:"игра с клюшками и мячом на поле"},
+    {word:"hockey / ice hockey",pos:"n",translation:"хоккей / хоккей на льду",note:"командная игра с клюшкой и шайбой/мячом"},
+    {word:"netball (BrE)",pos:"n",translation:"нетбол",note:"командная игра, похожая на баскетбол"},
+    {word:"polo",pos:"n",translation:"поло",note:"конная командная игра с мячом"},
+    {word:"rugby (colloq. rugger) / American football",pos:"n",translation:"регби / американский футбол",note:"командные контактные игры с мячом"},
+    {word:"(lawn) tennis",pos:"n",translation:"теннис",note:"socially great fun; requires proficiency; excellent general exercise"},
+    {word:"volleyball",pos:"n",translation:"волейбол",note:"командная игра с мячом через сетку"},
+    {word:"water polo",pos:"n",translation:"водное поло",note:"командная игра в воде с мячом"},
+    {word:"chess",pos:"n",translation:"шахматы",note:"to play chess; indoor game"},
+    {word:"draughts",pos:"n",translation:"шашки",note:"настольная игра"},
+    {word:"squash",pos:"n",translation:"сквош",note:"good for maximum exercise in minimum time; 40 min per game; requires agility"},
+    {word:"table tennis",pos:"n",translation:"настольный теннис",note:"indoor game; ping-pong"}
+  ],
+  "Unit 1 — Competition Sites & Equipment": [
+    {word:"gym (gymnasium)",pos:"n",translation:"спортивный зал",note:"помещение для занятий спортом"},
+    {word:"court",pos:"n",translation:"корт; площадка",note:"для тенниса, баскетбола, сквоша"},
+    {word:"course",pos:"n",translation:"трасса; поле",note:"для гольфа, скачек, велогонок"},
+    {word:"pitch",pos:"n",translation:"поле (игровое)",note:"для футбола, крикета, регби"},
+    {word:"playground",pos:"n",translation:"игровая площадка",note:"площадка для игр на свежем воздухе"},
+    {word:"ring",pos:"n",translation:"ринг; арена",note:"для бокса, борьбы, цирковых выступлений"},
+    {word:"rink",pos:"n",translation:"каток; площадка для катания",note:"для катания на коньках"},
+    {word:"track",pos:"n",translation:"беговая дорожка; трасса",note:"для лёгкой атлетики, велоспорта, скачек"},
+    {word:"arrow",pos:"n",translation:"стрела",note:"для стрельбы из лука"},
+    {word:"bat",pos:"n",translation:"бита",note:"для крикета, бейсбола, настольного тенниса"},
+    {word:"bow",pos:"n",translation:"лук",note:"для стрельбы из лука"},
+    {word:"club",pos:"n",translation:"клюшка (гольф)",note:"для игры в гольф"},
+    {word:"cue",pos:"n",translation:"кий",note:"для игры в бильярд"},
+    {word:"dart",pos:"n",translation:"дротик",note:"для игры в дартс"},
+    {word:"oar",pos:"n",translation:"весло",note:"для гребли"},
+    {word:"paddle",pos:"n",translation:"весло (короткое); ракетка",note:"для каноэ, настольного тенниса"},
+    {word:"puck",pos:"n",translation:"шайба",note:"для хоккея на льду"},
+    {word:"racket",pos:"n",translation:"ракетка",note:"для тенниса, бадминтона, сквоша"},
+    {word:"rod / line",pos:"n",translation:"удочка / леска",note:"для рыбалки"},
+    {word:"stick",pos:"n",translation:"клюшка (хоккей)",note:"для хоккея, поло"},
+    {word:"shuttlecock",pos:"n",translation:"волан",note:"для бадминтона"}
+  ],
+  "Unit 1 — Participants & Competitions": [
+    {word:"crew",pos:"n",translation:"команда (гребля/яхтинг)",note:"used for sportsmen rowing or sailing a boat; syn: team"},
+    {word:"national / Olympic / college team",pos:"n",translation:"национальная / олимпийская / студенческая команда",note:"команда различного уровня"},
+    {word:"umpire / referee / judge",pos:"n",translation:"судья",note:"umpire (cricket, tennis), referee (football, boxing), judge (gymnastics); syn: judge"},
+    {word:"opponent / rival",pos:"n",translation:"соперник, противник",note:"(for/in smth) a person competing with another; syn: opponent; the rival team"},
+    {word:"sportsman / athlete",pos:"n",translation:"спортсмен / атлет",note:"a person who trains to compete in physical exercises and sports"},
+    {word:"sportswoman",pos:"n",translation:"спортсменка",note:"женщина-спортсмен"},
+    {word:"sports people",pos:"n",translation:"спортсмены (общее)",note:"люди, занимающиеся спортом"},
+    {word:"fan (colloq)",pos:"n",translation:"болельщик (разг.)",note:"enthusiastic supporter of a team or sportsperson"},
+    {word:"spectator",pos:"n",translation:"зритель",note:"человек, наблюдающий за соревнованием"},
+    {word:"sports enthusiast",pos:"n",translation:"любитель спорта",note:"человек, увлечённый спортом"},
+    {word:"to follow",pos:"v",translation:"следить за (командой/спортом)",note:"поддерживать, болеть за"},
+    {word:"to support",pos:"v",translation:"поддерживать (команду)",note:"to help smb by one's approval; to support a club/team; syn: be a fan"},
+    {word:"supporter",pos:"n",translation:"болельщик",note:"a regular supporter of a club/team"},
+    {word:"to shout for",pos:"v",translation:"болеть за; кричать в поддержку",note:"громко поддерживать команду"},
+    {word:"championship",pos:"n",translation:"чемпионат",note:"соревнование за звание чемпиона"},
+    {word:"competition",pos:"n",translation:"соревнование; конкуренция",note:"1. an event in which people compete; She came first in the dancing competition. 2. an activity in which people compete; We're in competition with several other companies"},
+    {word:"contest",pos:"n/v",translation:"состязание; состязаться",note:"1. a struggle or fight. 2. a competition; a contest of skill; to try to win; to compete"},
+    {word:"cup",pos:"n",translation:"кубок",note:"приз в форме кубка; final/semi-final cup"},
+    {word:"final, semi-final cup",pos:"n",translation:"финал, полуфинал кубка",note:"решающие этапы кубкового турнира"},
+    {word:"games (Olympic Games)",pos:"n",translation:"игры (Олимпийские игры)",note:"крупные международные соревнования"},
+    {word:"match",pos:"n",translation:"матч",note:"соревнование между двумя командами или игроками"},
+    {word:"tournament",pos:"n",translation:"турнир",note:"серия соревнований"}
+  ],
+  "Unit 1 — Scoring System": [
+    {word:"best / record / fastest time",pos:"n",translation:"лучшее / рекордное / быстрейшее время",note:"показатели при оценке результата"},
+    {word:"to beat / to defeat",pos:"v",translation:"победить, разгромить",note:"(beat, beaten) to defeat smb; to beat an opponent/record; to beat an opposing side/team"},
+    {word:"to draw",pos:"v/n",translation:"сыграть вничью; ничья",note:"(drew, drawn) the result of a game in which neither player or side wins; The match ended in a draw"},
+    {word:"goal",pos:"n",translation:"гол; ворота",note:"счётная единица в футболе, хоккее и др."},
+    {word:"to lose",pos:"v",translation:"проигрывать",note:"(lost) to be defeated; to fail; Ant: win; to lose a game/a war/money (at cards); They lost to a stronger side"},
+    {word:"loser",pos:"n",translation:"проигравший",note:"to be a good/bad loser"},
+    {word:"point",pos:"n",translation:"очко",note:"(in sport) a scoring system used in deciding who is the winner; syn: score, goal; We won the rugby game with 12 points to 3"},
+    {word:"runner-up",pos:"n",translation:"занявший второе место",note:"финалист, уступивший победителю"},
+    {word:"record",pos:"n",translation:"рекорд",note:"the best performance in sport; to beat/break a record; to hold the world record; to set (up) a record; Olympic/all-time/world record"},
+    {word:"record-breaker",pos:"n",translation:"рекордсмен",note:"a person who broke the record"},
+    {word:"record-holder",pos:"n",translation:"действующий рекордсмен",note:"a person who holds the record"},
+    {word:"to set / to beat / to break / to hold a record",pos:"v",translation:"установить / побить / сломить / удерживать рекорд",note:"различные действия с рекордом"},
+    {word:"to score",pos:"v/n",translation:"набирать очки; счёт",note:"1. to gain (points, etc.) in a game; to score a goal; He scored 3 points in the last half. 2. a number of points, goals made by a player/team; a high/low score; to keep the score"},
+    {word:"victory",pos:"n",translation:"победа",note:"успех в соревновании или борьбе"},
+    {word:"to win",pos:"v",translation:"побеждать",note:"(won) 1. to be victorious; to win in a battle/contest/race. 2. to obtain smth as result of competition; She won the first prize; to win hands down (infml) = to win easily; win or lose = whether one succeeds or fails"},
+    {word:"winner",pos:"n",translation:"победитель",note:"a person, horse, etc. that wins"},
+    {word:"winning",pos:"adj",translation:"победный",note:"that wins or has won; the winning horse, number, ticket"}
+  ],
+  "Unit 2 — Lifestyle and Fitness": [
+    {word:"diet",pos:"n",translation:"диета; питание",note:"режим питания"},
+    {word:"calorie controlled diet",pos:"n",translation:"диета с подсчётом калорий",note:"питание с ограничением калорий"},
+    {word:"low fat food",pos:"n",translation:"низкокалорийная еда",note:"продукты с низким содержанием жира"},
+    {word:"slim",pos:"adj/v",translation:"стройный; худеть",note:"стройное телосложение; reduce (infml esp AmE) = to lose weight; to diet"},
+    {word:"weight control",pos:"n",translation:"контроль веса",note:"поддержание нормального веса тела"},
+    {word:"gain / lose weight",pos:"v",translation:"набирать / терять вес",note:"изменение массы тела"},
+    {word:"fit",pos:"adj",translation:"в форме, здоровый",note:"syn: healthy; in good shape; to keep fit; to be fit for/to; to be as fit as a fiddle = in very good physical condition"},
+    {word:"fitness",pos:"n",translation:"физическая форма",note:"состояние хорошего физического здоровья"},
+    {word:"shape",pos:"n",translation:"форма (физическая)",note:"физическое состояние тела; in good/bad shape"},
+    {word:"streamline shape",pos:"n",translation:"стройная фигура",note:"подтянутое, спортивное телосложение"},
+    {word:"habits",pos:"n",translation:"привычки",note:"a thing that a person does often and almost without thinking; bad habits"},
+    {word:"eating habits",pos:"n",translation:"пищевые привычки",note:"привычки в еде"},
+    {word:"bad posture",pos:"n",translation:"плохая осанка",note:"неправильное положение тела"},
+    {word:"drinking habits",pos:"n",translation:"питьевые привычки",note:"привычки в употреблении напитков"},
+    {word:"sleeping habits",pos:"n",translation:"режим сна",note:"привычки, связанные со сном"},
+    {word:"lifestyle",pos:"n",translation:"образ жизни",note:"способ жизни человека"},
+    {word:"active / sedentary lifestyle",pos:"n",translation:"активный / сидячий образ жизни",note:"образ жизни с высокой или низкой физической активностью"}
+  ],
+  "Vocabulary Reference (A–K)": [
+    {word:"appeal",pos:"v",translation:"привлекать, нравиться",note:"(to smb) to attract or interest smb; This idea/sport appeals to me"},
+    {word:"appeal",pos:"n",translation:"привлекательность; интерес",note:"attractiveness, interest; Does yoga hold any appeal for you?"},
+    {word:"appealing",pos:"adj",translation:"привлекательный",note:"syn: attractive, charming; The idea of joining your club is certainly appealing"},
+    {word:"athlete",pos:"n",translation:"спортсмен, атлет",note:"a person who trains to compete in physical exercises and sports, esp. running and jumping"},
+    {word:"athletic",pos:"adj",translation:"спортивный, атлетический",note:"an athletic club/figure"},
+    {word:"athletics",pos:"n",translation:"лёгкая атлетика",note:"athletics meeting"},
+    {word:"beat",pos:"v",translation:"победить, разгромить",note:"(beat, beaten) to defeat smb; to beat an opponent/record; to beat an opposing side/team; The attack was beaten off"},
+    {word:"cheat",pos:"v",translation:"жульничать",note:"to act dishonestly, deceitfully; He always cheats at cards; I don't like people who cheat at sports"},
+    {word:"chessman",pos:"n",translation:"шахматная фигура",note:"(pl – men) one of the 16 pieces to play chess with"},
+    {word:"chess-player",pos:"n",translation:"шахматист",note:"He's a first-class chess-player"},
+    {word:"coach",pos:"n/v",translation:"тренер; тренировать",note:"a person who trains sportsmen, esp. for contests; syn: trainer; a tennis/football coach; (smb for/in smth) to teach or train smb"},
+    {word:"compete",pos:"v",translation:"соревноваться",note:"(against/with smb) (in smth) (for smth) to try to win smth in competition with others"},
+    {word:"competitive",pos:"adj",translation:"соревновательный",note:"competitive sports; competitive spirit"},
+    {word:"competitor",pos:"n",translation:"участник соревнования",note:"a person who competes; syn: contestant"},
+    {word:"contestant",pos:"n",translation:"участник (конкурса/соревнования)",note:"syn: competitor"},
+    {word:"draw",pos:"n/v",translation:"ничья; сыграть вничью",note:"(drew, drawn) the result of a game in which neither player or side wins; The match ended in a draw / was drawn"},
+    {word:"event",pos:"n",translation:"событие; вид соревнований",note:"1. a thing that happens; an incident. 2. any of the races, competitions in a sports programme; track and field events; The 800m is the fourth event of the afternoon"},
+    {word:"fair",pos:"adj",translation:"честный, справедливый",note:"free from dishonesty or injustice; syn: just; Ant: unfair; to make a fair decision; It isn't fair to kick another player in football"},
+    {word:"fairly",pos:"adv",translation:"честно, справедливо",note:"in a fair manner, honestly; You're not treating us fairly"},
+    {word:"indulge",pos:"v",translation:"позволять себе",note:"(in smth) to allow oneself to enjoy the pleasure of smth; I shall forget about dieting today. I'm going to indulge; On Sundays we often indulge in long walks to the nearest woods"},
+    {word:"judge",pos:"n",translation:"судья (соревнований)",note:"a person who decides who has won a competition, contest; syn: referee (in football, boxing), umpire (in cricket, basketball, tennis)"},
+    {word:"keep up (with)",pos:"v",translation:"не отставать",note:"to move or progress at the same pace or speed/as smb/smth; Slow down. I can't keep up with you"},
+    {word:"kick",pos:"v",translation:"бить ногой; пинать",note:"to hit with the foot; He kicked the ball above the goal"},
+    {word:"kick off",pos:"v",translation:"начинать матч (с центра)",note:"to start a football match by kicking the ball"}
+  ],
+  "Vocabulary Reference (L–Y)": [
+    {word:"participate",pos:"v",translation:"участвовать",note:"to take part or become involved; to participate in a competition/discussion/meeting"},
+    {word:"participant",pos:"n",translation:"участник",note:"a person who participates in smth"},
+    {word:"rivalry",pos:"n",translation:"соперничество",note:"syn: competition"},
+    {word:"spirit",pos:"n",translation:"боевой дух; командный дух",note:"(in sport) force, effort or excitement shown; sporting spirit; team spirit; They always lose because they have no team spirit"},
+    {word:"sport(s)",pos:"n(pl)",translation:"спорт; вид спорта",note:"1. a physical activity done; He's fond of sport. 2. a form of such activity; amateur/professional sport; team/athletic/country sports; a sports field/day/programme"},
+    {word:"sporting",pos:"adj",translation:"спортивный",note:"connected with or interested in sport; a sporting man/occasion"},
+    {word:"stamina",pos:"n",translation:"выносливость",note:"an ability to endure much physical or mental strain; Marathon-runners need plenty of stamina"},
+    {word:"team",pos:"n",translation:"команда",note:"a group of people who work, act or play together; syn: crew; Football is a team game; team events; team spirit"},
+    {word:"train",pos:"v",translation:"тренироваться",note:"to cause smb or become physically fit by exercise and diet; He's been training hard for the races"},
+    {word:"trainee",pos:"n",translation:"стажёр; начинающий",note:"a person being trained for a job, etc."},
+    {word:"trainer",pos:"n",translation:"тренер",note:"syn: coach"},
+    {word:"training",pos:"n",translation:"тренировка; подготовка",note:"a process of preparing or being prepared for a sport or job; athletic training; to go into training; to be in (strict) training for the game"},
+    {word:"yacht",pos:"n",translation:"яхта",note:"a light sailing boat built for racing and for cruising"},
+    {word:"yachting",pos:"n",translation:"парусный спорт",note:"to be keen on yachting"},
+    {word:"yachtsman",pos:"n",translation:"яхтсмен",note:"(pl – men) a round-the-world yachtsman"}
+  ]
+};
+
+function buildSportsPage() {
+  const container = document.getElementById('sports-sections');
+  if (container.children.length > 0) return;
+  for (const [section, words] of Object.entries(SPORTS_DATA)) {
+    const block = document.createElement('div');
+    block.className = 'section-block';
+    const heading = document.createElement('div');
+    heading.className = 'section-heading';
+    heading.style.background = 'var(--card-green)';
+    heading.textContent = section;
+    block.appendChild(heading);
+    const table = document.createElement('table');
+    table.className = 'words-table';
+    table.innerHTML = `<thead><tr>
+      <th>Word</th><th>POS</th><th>Translation</th><th>Note</th>
+    </tr></thead>`;
+    const tbody = document.createElement('tbody');
+    words.forEach(w => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="td-word">${w.word}</td>
+        <td class="td-pos">${w.pos}</td>
+        <td class="td-translation">${w.translation}</td>
+        <td class="td-note">${w.note}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    block.appendChild(table);
+    container.appendChild(block);
+  }
+}
+
+function showPage(page) {
+  ['home', 'career-page', 'sports-page', 'culture-page', 'medicine-page'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  if (page === 'home') {
+    document.getElementById('home').style.display = 'flex';
+  } else {
+    if (page === 'career') buildCareerPage();
+    if (page === 'medicine') buildMedicinePage();
+    if (page === 'sports') buildSportsPage();
+    document.getElementById(page + '-page').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+}
+</script>
+</body>
+</html>
